@@ -3,6 +3,7 @@ package repository
 import (
 	"errors"
 	"log"
+	"time"
 
 	"github.com/swenwebber/todo-app/internal/model"
 )
@@ -22,7 +23,8 @@ func NewMemoryTaskRepository() *MemoryTaskRepo {
 // Create method implementation
 func (m *MemoryTaskRepo) Create(task model.Task) model.Task {
 	task.ID = m.nextID
-
+	task.CreatedAt = time.Now()
+	task.UpdatedAt = time.Now()
 	m.tasks[task.ID] = task
 
 	m.nextID++
@@ -42,14 +44,14 @@ func (m *MemoryTaskRepo) GetById(id int) (model.Task, error) {
 }
 
 // GetAll task  method implementation
-func (m *MemoryTaskRepo) GetAll() []model.Task {
+func (m *MemoryTaskRepo) GetAll() ([]model.Task, error) {
 	tasks := []model.Task{}
 
 	for _, task := range m.tasks {
 		tasks = append(tasks, task)
 	}
 
-	return tasks
+	return tasks, nil
 }
 
 // Update task method implementation
@@ -59,6 +61,10 @@ func (m *MemoryTaskRepo) Update(task model.Task) (model.Task, error) {
 	if !exists {
 		return model.Task{}, errors.New("task not found")
 	}
+	originalTask := m.tasks[task.ID]
+	task.CreatedAt = originalTask.CreatedAt
+	task.UpdatedAt = time.Now()
+
 	m.tasks[task.ID] = task
 	return task, nil
 

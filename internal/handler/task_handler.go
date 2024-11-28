@@ -25,9 +25,17 @@ type UpdateTaskRequest struct {
 }
 
 type TaskResponse struct {
-	ID     int    `json:"id"`
-	Title  string `json:"title"`
-	Status bool   `json:"bool"`
+	ID        int    `json:"id"`
+	Title     string `json:"title"`
+	Status    bool   `json:"status"`
+	CreatedAt string `json:"CreatedAt"`
+	UpdatedAt string `json:"UpdatedAt"`
+}
+
+func NewTaskHandler(s *service.TaskService) *TaskHandler {
+	return &TaskHandler{
+		service: s,
+	}
 }
 
 func (h *TaskHandler) CreateTask(w http.ResponseWriter, r *http.Request) {
@@ -51,9 +59,11 @@ func (h *TaskHandler) CreateTask(w http.ResponseWriter, r *http.Request) {
 	}
 
 	response := TaskResponse{
-		ID:     task.ID,
-		Title:  task.Title,
-		Status: task.Status,
+		ID:        task.ID,
+		Title:     task.Title,
+		Status:    task.Status,
+		CreatedAt: task.CreatedAt.Format("2006-01-02 15:04:05"),
+		UpdatedAt: task.UpdatedAt.Format("2006-01-02 15:04:05"),
 	}
 
 	w.Header().Set("Content-Type", "application/json")
@@ -87,9 +97,11 @@ func (h *TaskHandler) GetTask(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-type", "application/json")
 	json.NewEncoder(w).Encode(TaskResponse{
-		ID:     task.ID,
-		Title:  task.Title,
-		Status: task.Status,
+		ID:        task.ID,
+		Title:     task.Title,
+		Status:    task.Status,
+		CreatedAt: task.CreatedAt.Format("2006-01-02 15:04:05"),
+		UpdatedAt: task.UpdatedAt.Format("2006-01-02 15:04:05"),
 	})
 
 }
@@ -105,9 +117,11 @@ func (h *TaskHandler) GetAllTasks(w http.ResponseWriter, r *http.Request) {
 
 	for _, task := range allTasks {
 		allTasksSlice = append(allTasksSlice, TaskResponse{
-			ID:     task.ID,
-			Title:  task.Title,
-			Status: task.Status,
+			ID:        task.ID,
+			Title:     task.Title,
+			Status:    task.Status,
+			CreatedAt: task.CreatedAt.Format("2006-01-02 15:04:05"),
+			UpdatedAt: task.UpdatedAt.Format("2006-01-02 15:04:05"),
 		})
 
 	}
@@ -152,12 +166,20 @@ func (h *TaskHandler) UpdateTask(w http.ResponseWriter, r *http.Request) {
 
 	updatedTask, err := h.service.UpdateTask(task)
 
+	response := TaskResponse{
+		ID:        updatedTask.ID,
+		Title:     updatedTask.Title,
+		Status:    updatedTask.Status,
+		CreatedAt: updatedTask.CreatedAt.Format("2006-01-02 15:04:05"),
+		UpdatedAt: updatedTask.UpdatedAt.Format("2006-01-02 15:04:05"),
+	}
+
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusNotFound)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(updatedTask)
+	json.NewEncoder(w).Encode(response)
 
 }
 
