@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"runtime/debug"
 	"syscall"
 	"time"
 
@@ -27,7 +28,7 @@ type Server struct {
 	config     *Config
 }
 
-func NewServer(handler *handler.TaskHandler, config *Config) *Server {
+func NewServer(handler *handler.TaskHandler, th *handler.TemplateHandler, config *Config) *Server {
 	if config == nil {
 		config = &Config{
 			Port:         "8080",
@@ -37,7 +38,7 @@ func NewServer(handler *handler.TaskHandler, config *Config) *Server {
 		}
 	}
 
-	router := routes.NewRouter(handler)
+	router := routes.NewRouter(handler, th)
 
 	httpServer := &http.Server{
 		Addr:         ":" + config.Port,
@@ -55,6 +56,17 @@ func NewServer(handler *handler.TaskHandler, config *Config) *Server {
 }
 
 func (s *Server) Run() error {
+
+	//recovery handler
+	defer func() {
+		if err := recover(); err != nil {
+			log.Printf("Server panic:%v\n%s", err, debug.Stack())
+
+			//shutting down
+			s.shutdown()
+		}
+	}()
+
 	//Creating error channel
 	errChan := make(chan error, 1)
 
@@ -67,7 +79,6 @@ func (s *Server) Run() error {
 	//starting server in go routine
 	go func() {
 		log.Printf("Starting server on port %s", s.config.Port)
-
 		if err := s.httpServer.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			errChan <- err
 		}
