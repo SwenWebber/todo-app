@@ -24,8 +24,9 @@ func (rec *Recovery) RecoveryMiddleware(next http.Handler) http.Handler {
 		defer func() {
 			if err := recover(); err != nil {
 				rec.logger.Printf("Panic:%v\n%s", err, debug.Stack())
+				http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 			}
-			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+
 		}()
 		next.ServeHTTP(w, r)
 	})

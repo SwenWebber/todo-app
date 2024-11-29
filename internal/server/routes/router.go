@@ -3,10 +3,18 @@ package routes
 import (
 	"github.com/gorilla/mux"
 	"github.com/swenwebber/todo-app/internal/handler"
+	"github.com/swenwebber/todo-app/internal/middleware"
 )
 
 func NewRouter(h *handler.TaskHandler, th *handler.TemplateHandler) *mux.Router {
 	r := mux.NewRouter()
+
+	logger := middleware.NewLogger()
+	recovery := middleware.NewRecovery()
+
+	//middlewares for logging and recovery using gorilla/mux builtin function Use()
+	r.Use(recovery.RecoveryMiddleware)
+	r.Use(logger.LoggingMiddleware)
 
 	//frontend
 	r.HandleFunc("/", th.Home).Methods("GET")
