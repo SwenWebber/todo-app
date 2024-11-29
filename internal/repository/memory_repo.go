@@ -22,6 +22,7 @@ func NewMemoryTaskRepository() *MemoryTaskRepo {
 
 // Create method implementation
 func (m *MemoryTaskRepo) Create(task model.Task) model.Task {
+
 	task.ID = m.nextID
 	task.CreatedAt = time.Now()
 	task.UpdatedAt = time.Now()
@@ -80,6 +81,11 @@ func (m *MemoryTaskRepo) Delete(id int) error {
 
 	delete(m.tasks, id)
 	log.Printf("Task %d deleted", id) // check what task was deleted
+
+	if len(m.tasks) == 0 {
+		m.tasks = make(map[int]model.Task)
+		m.nextID = 1
+	}
 
 	return nil
 }

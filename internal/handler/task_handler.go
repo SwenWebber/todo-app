@@ -3,6 +3,7 @@ package handler
 import (
 	"encoding/json"
 	"net/http"
+	"sort"
 	"strconv"
 	"strings"
 
@@ -112,6 +113,10 @@ func (h *TaskHandler) GetAllTasks(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
+	sort.Slice(allTasks, func(i int, j int) bool {
+		return allTasks[i].ID < allTasks[j].ID
+	})
 
 	allTasksSlice := make([]TaskResponse, 0)
 

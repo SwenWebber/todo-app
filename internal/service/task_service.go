@@ -22,6 +22,10 @@ func (s *TaskService) CreateTask(title string, status bool) (model.Task, error) 
 		return model.Task{}, errors.New("Title cannot be empty")
 	}
 
+	if len(title) < 5 || len(title) > 55 {
+		return model.Task{}, errors.New("Invalid title length")
+	}
+
 	task := model.Task{
 		Title:  title,
 		Status: status,

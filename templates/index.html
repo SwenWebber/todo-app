@@ -25,7 +25,7 @@
 <body>
     <div class="container py-5">
         <!-- Header -->
-        <h1 class="mb-4">To Do App</h1>
+        <h1 class="mb-4">Task Manager</h1>
 
         <!-- Create Task Form -->
         <div class="card mb-4">
@@ -170,10 +170,23 @@
             });
         }
 
+        function validateTitle(title) {
+            if (title.length < 5 || title.length > 55) {
+                return 'Invalid title length. Title must be between 5 and 55 characters.';
+            }
+            return null;
+        }
+
         // Create new task
         createTaskForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const title = document.getElementById('taskTitle').value;
+
+            const error = validateTitle(title);
+            if (error) {
+                alert(error);
+                return;
+            }
 
             try {
                 const response = await fetch(`${API_URL}/tasks`, {
@@ -223,6 +236,12 @@
             const taskId = document.getElementById('editTaskId').value;
             const title = document.getElementById('editTaskTitle').value;
             const status = document.getElementById('editTaskStatus').checked;
+
+            const error = validateTitle(title);
+            if (error) {
+                alert(error);
+                return;
+            }
 
             try {
                 const response = await fetch(`${API_URL}/tasks/${taskId}`, {
