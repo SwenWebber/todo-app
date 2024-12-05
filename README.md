@@ -13,7 +13,10 @@ A full-stack todo application built with Go backend and web frontend that allows
 
 * Go 1.21 or higher
 * SQLite/PostgreSQL database
-*Web browser (Chrome, Firefox, Safari)
+* Web browser (Chrome, Firefox, Safari)
+* Gorilla Mux
+* GORM
+* Go Project Layout
 ### Installing
 
 * Clone the repository
@@ -25,7 +28,7 @@ A full-stack todo application built with Go backend and web frontend that allows
 * Install dependencies
 
 ```
-go mod download
+go mod tidy
 ```
 * Build the application
 ```
@@ -36,25 +39,11 @@ go build
 ./todo-app
 ```
 
-## Authors
-
-SwenWebber
-@SwenWebber
-
 ## Version History
 
 * 0.1
     * Initial Release
     * Basic CRUD functionality for todos
 
-## Acknowledgments
-
-* Gorilla Mux
-* GORM
-* Go Project Layout
 
 
-
-SwenWebber - GitHub Profile
-
-Project Link: https://github.com/SwenWebber/todo-app
