@@ -1,71 +1,59 @@
-Todo App
-A simple and efficient todo list application built with Go backend and web frontend.
+# Todo App
 
-Features
+Simple todo list application to manage your daily tasks.
 
-Create, read, update, and delete todo items
+## Description
 
-Mark todos as complete/incomplete
+A full-stack todo application built with Go backend and web frontend that allows users to manage their tasks efficiently. Users can create, complete, and delete todo items with a clean and intuitive interface.
 
-Persistent storage using database
 
-Clean and intuitive user interface
+## Getting Started
 
-Tech Stack
+### Dependencies
 
-Backend
+* Go 1.21 or higher
+* SQLite/PostgreSQL database
+*Web browser (Chrome, Firefox, Safari)
+### Installing
 
-Go 1.21+
+* Clone the repository
+  ```
+  git clone https://github.com/SwenWebber/todo-app.git
+  ```
+### Executing program
 
-Gorilla Mux (Router)
+* Install dependencies
 
-GORM (ORM)
-
-SQLite/PostgreSQL (Database)
-
-Frontend
-
-HTML5
-
-CSS3
-
-JavaScript
-
-Fetch API for HTTP requests
-
-Getting Started
-
-Prerequisites
-
-# Install Go
-go version # Should be 1.21 or higher
-
-# Install dependencies
+```
 go mod download
+```
+* Build the application
+```
+go build
+```
+* Run the application
+```
+./todo-app
+```
 
-Installation
-Clone the repository
+## Authors
 
-git clone https://github.com/SwenWebber/todo-app.git
+SwenWebber
+@SwenWebber
 
-Navigate to project directory
+## Version History
 
-cd todo-app
+* 0.1
+    * Initial Release
+    * Basic CRUD functionality for todos
 
-Contributing
+## Acknowledgments
 
-Fork the repository
-
-Create a feature branch (git checkout -b feature/AmazingFeature)
-
-Commit your changes (git commit -m 'Add some AmazingFeature')
-
-Push to the branch (git push origin feature/AmazingFeature)
-
-Open a Pull Request
+* Gorilla Mux
+* GORM
+* Go Project Layout
 
 
-Contact
 
 SwenWebber - GitHub Profile
 
