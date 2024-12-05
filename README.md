@@ -20,9 +20,9 @@ A full-stack todo application built with Go backend and web frontend that allows
 ### Installing
 
 * Clone the repository
-  ```
-  git clone https://github.com/SwenWebber/todo-app.git
-  ```
+ ```
+git clone https://github.com/SwenWebber/todo-app.git
+ ```
 ### Executing program
 
 * Install dependencies
